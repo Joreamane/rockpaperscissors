@@ -1,48 +1,63 @@
 let computerOptions = ['Rock', 'Paper', 'Scissors']
+const userWins = document.getElementById('userWins')
+const compWins = document.getElementById('compWins')
+let iUser = 0
+let iComp = 0
 
 function playRound() {
-  // The following function allows the computer to randomly select
   function computerPlay() {
     let randNum = Math.floor(Math.random()*computerOptions.length);
     let compChoice = computerOptions[randNum];
     return compChoice;
   }
-  // The following function allows the user to select a choice
-  function userPlay() {
-    let userInput = prompt("Please type Rock, Paper or Scissors!")
-    let userChoiceLower = userInput.toLowerCase();
-    let userChoice = userChoiceLower.charAt(0).toUpperCase() + userChoiceLower.slice(1);
-    return userChoice;
-  }
-  // Creating useable variables from the two above functions
-  let userChoice = userPlay();
+  let userChoice = event.target.textContent
   let compChoice = computerPlay();
-  if (userChoice === "Rock" && compChoice === "Scissors"){
-    return "You defeated the Computer! Your Rock crushed the Computer's scissors!"
-  } else if (userChoice === "Rock" && compChoice === "Rock") {
-    return "You tied with the Computer! You both chose rock..."
-  } else if (userChoice === "Rock" && compChoice === "Paper") {
-    return "You were beaten by the Computer... Their paper wrapped up your rock."
-  } else if (userChoice === "Paper" && compChoice === "Paper") {
-    return "You tied with the Computer! You both chose paper..."
-  } else if (userChoice === "Paper" && compChoice === "Rock") {
-    return "You defeated the Computer! Your paper covered their rock!"
-  } else if (userChoice === "Paper" && compChoice === "Scissors") {
-    return "You were beaten by the Computer! Their scissors cut your paper into pieces"
-  } else if (userChoice === "Scissors" && compChoice === "Paper") {
-    return "You defeated the Computer! Your scissors cut their paper in half!"
-  } else if (userChoice === "Scissors" && compChoice === "Rock") {
-    return "You were beaten by the Computer! Their rock crushed your scissors!"
-  } else if (userChoice === "Scissors" && compChoice === "Scissors") {
-    return "You tied with the Computer! You both chose scissors..."
-  } else {
-    return "There was an invalid selection somewhere!"
+  let result = ''
+  // while(iUser < '5' || iComp < '5') {
+    if (userChoice === "Rock" && compChoice === "Scissors"){
+      result = "You defeated the Computer! Your Rock crushed the Computer's scissors!"
+      iUser++
+    } else if (userChoice === "Rock" && compChoice === "Rock") {
+      result = "You tied with the Computer! You both chose rock..."
+    } else if (userChoice === "Rock" && compChoice === "Paper") {
+      result = "You were beaten by the Computer... Their paper wrapped up your rock."
+      iComp++
+    } else if (userChoice === "Paper" && compChoice === "Paper") {
+      result = "You tied with the Computer! You both chose paper..."
+    } else if (userChoice === "Paper" && compChoice === "Rock") {
+      result = "You defeated the Computer! Your paper covered their rock!"
+      iUser++
+    } else if (userChoice === "Paper" && compChoice === "Scissors") {
+      result = "You were beaten by the Computer! Their scissors cut your paper into pieces"
+      iComp++
+    } else if (userChoice === "Scissors" && compChoice === "Paper") {
+      result = "You defeated the Computer! Your scissors cut their paper in half!"
+      iUser++
+    } else if (userChoice === "Scissors" && compChoice === "Rock") {
+      result = "You were beaten by the Computer! Their rock crushed your scissors!"
+      iComp++
+    } else if (userChoice === "Scissors" && compChoice === "Scissors") {
+      result = "You tied with the Computer! You both chose scissors..."
+    } else {
+      result = "There was an invalid selection somewhere!"
+  // }
+    }
+  let outcome = document.getElementById('outcome')
+  outcome.textContent = result
+  userWins.textContent = iUser
+  compWins.textContent = iComp
+  const finalResult = document.querySelector('.finalResult')
+  if(iUser === 5) {
+    finalResult.textContent = 'Congratulations on defeating the Computer! Refresh the page to play again!'
   }
-}
-// Supposed to call the playRound function 5 times, is only working once though
-function game() {
-  for (let i = 0; i < 5; i++) {
-    console.log(playRound());
+  if(iComp === 5) {
+    finalResult.textContent = 'Sadly you have been utterly defeated... Refresh the page to try again!'
   }
 }
 
+document.querySelectorAll('.userPlay').forEach(e => e.addEventListener('click', function() {
+  while(iUser < '5' && iComp < '5') {
+    playRound();
+    break;
+  }
+}))
